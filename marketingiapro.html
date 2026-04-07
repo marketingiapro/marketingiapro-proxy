@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MarketingIAPro – Sistemas de Marketing Automatizados con IA</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+/* ── DARK THEME (default) ── */
+[data-theme="dark"]{
+  --bg:        #0A0A0A;
+  --bg2:       #0F0F0F;
+  --bg3:       #111111;
+  --surface:   rgba(255,255,255,0.03);
+  --border:    rgba(255,255,255,0.07);
+  --border2:   rgba(255,255,255,0.12);
+  --text:      #FFFFFF;
+  --muted:     rgba(255,255,255,0.65);
+  --muted2:    rgba(255,255,255,0.4);
+  --muted3:    rgba(255,255,255,0.25);
+  --stat-num:  #FFFFFF;
+  --pain-bg:   rgba(232,0,13,0.10);
+  --pain-bd:   rgba(232,0,13,0.25);
+  --sys-bg:    rgba(232,0,13,0.06);
+  --sys-bd:    rgba(232,0,13,0.15);
+  --sys-res-bg:rgba(232,0,13,0.08);
+  --sys-res-bd:rgba(232,0,13,0.50);
+  --step-bg:   #0A0A0A;
+  --step-hov:  #111111;
+  --bene-bg:   #0F0F0F;
+  --bene-hov:  #141414;
+  --quote-bg:  rgba(255,255,255,0.03);
+  --quote-bd:  rgba(255,255,255,0.08);
+  --obj-no-bg: #0F0F0F;
+  --obj-cross-bg: rgba(255,255,255,0.06);
+  --obj-cross-c:  rgba(255,255,255,0.30);
+  --nav-bg:    rgba(10,10,10,0.92);
+  --footer-bg: #050505;
+  --grid-line: rgba(232,0,13,0.06);
+  --big-num:   rgba(255,255,255,0.04);
+  --toggle-bg: rgba(255,255,255,0.08);
+  --toggle-ic: #FFFFFF;
+}
+
+/* ── LIGHT THEME ── */
+[data-theme="light"]{
+  --bg:        #FFFFFF;
+  --bg2:       #F7F6F3;
+  --bg3:       #FFFFFF;
+  --surface:   #FFFFFF;
+  --border:    #E2E0DB;
+  --border2:   #CBCAC5;
+  --text:      #111111;
+  --muted:     #666666;
+  --muted2:    #999999;
+  --muted3:    #BBBBBB;
+  --stat-num:  #111111;
+  --pain-bg:   rgba(232,0,13,0.07);
+  --pain-bd:   rgba(232,0,13,0.20);
+  --sys-bg:    rgba(232,0,13,0.04);
+  --sys-bd:    rgba(232,0,13,0.15);
+  --sys-res-bg:rgba(232,0,13,0.06);
+  --sys-res-bd:rgba(232,0,13,0.40);
+  --step-bg:   #FFFFFF;
+  --step-hov:  #F7F6F3;
+  --bene-bg:   #F7F6F3;
+  --bene-hov:  #FFFFFF;
+  --quote-bg:  #F7F6F3;
+  --quote-bd:  #E2E0DB;
+  --obj-no-bg: #FFFFFF;
+  --obj-cross-bg: #EFEFED;
+  --obj-cross-c:  #AAAAAA;
+  --nav-bg:    rgba(255,255,255,0.94);
+  --footer-bg: #F7F6F3;
+  --grid-line: rgba(232,0,13,0.05);
+  --big-num:   rgba(0,0,0,0.04);
+  --toggle-bg: rgba(0,0,0,0.06);
+  --toggle-ic: #111111;
+}
+
+:root{--red:#E8000D;--red-dark:#B0000A}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;transition:background 0.35s,color 0.35s}
+
+/* ── TOGGLE BUTTON ── */
+#theme-toggle{
+  position:fixed;bottom:28px;right:28px;z-index:999;
+  width:48px;height:48px;border-radius:50%;border:none;
+  background:var(--toggle-bg);
+  backdrop-filter:blur(10px);
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(0,0,0,0.25);
+  transition:background 0.3s,transform 0.2s;
+  border:1px solid var(--border2);
+}
+#theme-toggle:hover{transform:scale(1.1)}
+#theme-toggle svg{width:20px;height:20px;fill:var(--toggle-ic);transition:fill 0.3s}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:16px 5%;display:flex;justify-content:space-between;align-items:center;
+  background:var(--nav-bg);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  transition:background 0.35s,border-color 0.35s;
+}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-logo span{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--text);transition:color 0.35s}
+.nav-cta{
+  background:var(--red);color:#fff;border:none;
+  padding:10px 22px;font-family:'DM Sans',sans-serif;
+  font-size:13px;font-weight:600;letter-spacing:0.5px;
+  cursor:pointer;transition:background 0.2s;text-transform:uppercase;
+}
+.nav-cta:hover{background:var(--red-dark)}
+
+/* ── HERO ── */
+.hero{
+  padding:100px 5% 60px;position:relative;overflow:hidden;
+  display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;
+  background:var(--bg);transition:background 0.35s;
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),
+                   linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);
+  background-size:60px 60px;opacity:0.8;
+}
+.hero-glow{
+  position:absolute;top:-10%;right:-5%;
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(232,0,13,0.12) 0%,transparent 65%);
+  pointer-events:none;
+}
+.hero-content{position:relative;z-index:1;max-width:720px}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(232,0,13,0.10);border:1px solid rgba(232,0,13,0.28);
+  padding:6px 16px;margin-bottom:22px;
+  font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--red);
+}
+.hero-badge-dot{width:6px;height:6px;background:var(--red);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(1.4)}}
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(48px,6.5vw,82px);line-height:0.95;letter-spacing:1px;margin-bottom:20px;color:var(--text);transition:color 0.35s}
+h1 span{color:var(--red)}
+.hero-sub{font-size:16px;color:var(--muted);line-height:1.7;margin-bottom:28px;max-width:540px;font-weight:300;transition:color 0.35s}
+.hero-bullets{display:flex;flex-direction:column;gap:9px;margin-bottom:32px}
+.bullet{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text);transition:color 0.35s}
+.bullet-icon{width:18px;height:18px;background:var(--red);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bullet-icon svg{width:10px;height:10px;fill:none;stroke:white;stroke-width:2}
+.hero-cta-group{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.btn-primary{
+  background:var(--red);color:#fff;border:none;
+  padding:15px 32px;font-family:'DM Sans',sans-serif;
+  font-size:14px;font-weight:600;cursor:pointer;letter-spacing:0.5px;
+  transition:background 0.2s,transform 0.2s;
+  display:inline-flex;align-items:center;gap:10px;text-transform:uppercase;
+}
+.btn-primary:hover{background:var(--red-dark);transform:translateX(3px)}
+.cta-note{font-size:12px;color:var(--muted2);letter-spacing:0.5px;transition:color 0.35s}
+.hero-stats{
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;gap:24px;
+  padding-left:40px;border-left:1px solid var(--border);
+  transition:border-color 0.35s;
+}
+.stat-card{border-left:2px solid var(--red);padding-left:14px}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--stat-num);line-height:1;transition:color 0.35s}
+.stat-label{font-size:11px;color:var(--muted2);letter-spacing:1px;text-transform:uppercase;transition:color 0.35s}
+
+/* ── SECTIONS ── */
+section{padding:80px 5%;transition:background 0.35s}
+.section-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:12px;font-weight:600}
+h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(34px,4.5vw,56px);line-height:1;letter-spacing:1px;margin-bottom:20px;color:var(--text);transition:color 0.35s}
+
+/* PROBLEMA */
+.problema{background:var(--bg);border-top:1px solid var(--border)}
+.problema-inner{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
+.problema-text p{font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:22px;font-weight:300;transition:color 0.35s}
+.problema-pains{display:flex;flex-direction:column}
+.pain-item{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--border);transition:border-color 0.35s}
+.pain-item:last-child{border-bottom:none}
+.pain-x{
+  width:26px;height:26px;
+  background:var(--pain-bg);border:1px solid var(--pain-bd);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:13px;color:var(--red);font-weight:700;
+  transition:background 0.35s,border-color 0.35s;
+}
+.pain-text{font-size:14px;color:var(--text);transition:color 0.35s}
+.problema-highlight{
+  margin-top:22px;padding:18px;
+  border-left:3px solid var(--red);
+  background:rgba(232,0,13,0.05);
+}
+.problema-highlight p{font-size:14px;color:var(--text);font-style:italic;margin:0;transition:color 0.35s}
+
+/* SOLUCIÓN */
+.solucion{background:var(--bg2);border-top:1px solid var(--border)}
+.solucion-grid{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
+.solucion-features{display:flex;flex-direction:column;margin-top:10px}
+.feature-row{display:flex;align-items:flex-start;gap:16px;padding:18px 0;border-bottom:1px solid var(--border);transition:border-color 0.35s}
+.feature-row:last-child{border-bottom:none}
+.feature-num{font-family:'Bebas Neue',sans-serif;font-size:26px;color:rgba(232,0,13,0.3);line-height:1;min-width:30px}
+.feature-info h4{font-size:14px;font-weight:600;color:var(--text);margin-bottom:3px;transition:color 0.35s}
+.feature-info p{font-size:12px;color:var(--muted);line-height:1.6;transition:color 0.35s}
+.solucion-visual{
+  background:var(--surface);border:1px solid var(--border);padding:30px;
+  transition:background 0.35s,border-color 0.35s;
+}
+.solucion-visual-inner{display:flex;flex-direction:column;gap:12px}
+.sys-block{
+  background:var(--sys-bg);border:1px solid var(--sys-bd);padding:12px 16px;
+  transition:background 0.35s,border-color 0.35s;
+}
+.sys-block-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:3px;opacity:0.85}
+.sys-block-val{font-size:13px;color:var(--text);font-weight:500;transition:color 0.35s}
+.sys-arrow{text-align:center;color:rgba(232,0,13,0.45);font-size:16px}
+.sys-result{background:var(--sys-res-bg);border:1px solid var(--sys-res-bd) !important;transition:background 0.35s,border-color 0.35s}
+
+/* COMO FUNCIONA */
+.como{background:var(--bg);border-top:1px solid var(--border)}
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);margin-top:40px}
+.step{background:var(--step-bg);padding:32px 24px;position:relative;overflow:hidden;transition:background 0.3s}
+.step:hover{background:var(--step-hov)}
+.step-num{
+  font-family:'Bebas Neue',sans-serif;font-size:64px;color:var(--big-num);
+  position:absolute;top:-8px;right:14px;line-height:1;pointer-events:none;
+  transition:color 0.35s;
+}
+.step-icon{width:40px;height:40px;background:var(--red);display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.step-icon svg{width:18px;height:18px;fill:#fff}
+.step h3{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:0.5px;margin-bottom:8px;color:var(--text);transition:color 0.35s}
+.step p{font-size:12px;color:var(--muted);line-height:1.7;transition:color 0.35s}
+.step-bar{position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--red);transition:width 0.4s}
+.step:hover .step-bar{width:100%}
+
+/* BENEFICIOS */
+.beneficios{background:var(--bg2);border-top:1px solid var(--border)}
+.bene-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-top:40px}
+.bene-card{
+  background:var(--bene-bg);padding:32px 28px;
+  transition:background 0.3s;position:relative;overflow:hidden;
+}
+.bene-card::before{content:'';position:absolute;top:0;left:0;width:3px;height:0;background:var(--red);transition:height 0.4s}
+.bene-card:hover{background:var(--bene-hov)}
+.bene-card:hover::before{height:100%}
+.bene-card h4{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:0.5px;color:var(--text);margin-bottom:8px;margin-top:10px;transition:color 0.35s}
+.bene-card p{font-size:12px;color:var(--muted);line-height:1.7;transition:color 0.35s}
+
+/* AUTORIDAD */
+.autoridad{background:var(--bg);border-top:1px solid var(--border)}
+.auto-inner{display:grid;grid-template-columns:1fr 1.2fr;gap:70px;align-items:center}
+.auto-pillars{display:flex;flex-direction:column;gap:20px;margin-top:6px}
+.pillar{display:flex;align-items:flex-start;gap:18px}
+.pillar-line{width:2px;background:var(--red);min-height:54px;flex-shrink:0;margin-top:4px}
+.pillar-content h4{font-size:15px;font-weight:600;color:var(--text);margin-bottom:4px;transition:color 0.35s}
+.pillar-content p{font-size:12px;color:var(--muted);line-height:1.6;transition:color 0.35s}
+.auto-quote{
+  background:var(--quote-bg);border:1px solid var(--quote-bd);padding:36px;position:relative;
+  transition:background 0.35s,border-color 0.35s;
+}
+.auto-quote::before{
+  content:'"';font-family:'Bebas Neue',sans-serif;font-size:100px;
+  color:rgba(232,0,13,0.10);position:absolute;top:-16px;left:18px;line-height:1;
+}
+.auto-quote p{font-size:17px;line-height:1.7;color:var(--text);font-weight:300;font-style:italic;position:relative;z-index:1;transition:color 0.35s}
+.auto-quote cite{display:block;margin-top:18px;font-size:11px;color:var(--red);letter-spacing:2px;text-transform:uppercase;font-style:normal}
+
+/* OBJECIONES */
+.objeciones{background:var(--bg2);border-top:1px solid var(--border)}
+.obj-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-top:40px}
+.obj-col{padding:32px;border:1px solid var(--border);transition:background 0.35s,border-color 0.35s}
+.obj-col-yes{border-color:rgba(232,0,13,0.25);background:rgba(232,0,13,0.04)}
+.obj-col-no{background:var(--obj-no-bg)}
+.obj-col h3{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.5px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border);transition:border-color 0.35s}
+.obj-col-yes h3{color:var(--red)}
+.obj-col-no h3{color:var(--muted2)}
+.obj-list{display:flex;flex-direction:column;gap:12px}
+.obj-item{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text);transition:color 0.35s}
+.obj-check{width:20px;height:20px;background:var(--red);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:10px;color:#fff;font-weight:700}
+.obj-cross{
+  width:20px;height:20px;
+  background:var(--obj-cross-bg);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;font-size:10px;color:var(--obj-cross-c);font-weight:700;
+  transition:background 0.35s,border-color 0.35s,color 0.35s;
+}
+
+/* CTA FINAL */
+.cta-final{background:var(--red);position:relative;overflow:hidden;text-align:center;padding:80px 5%}
+.cta-final-grid{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(0,0,0,0.08) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(0,0,0,0.08) 1px,transparent 1px);
+  background-size:40px 40px;
+}
+.cta-final h2{color:#fff;font-size:clamp(38px,5.5vw,66px);position:relative;z-index:1;margin-bottom:14px}
+.cta-final p{font-size:16px;color:rgba(255,255,255,0.85);margin-bottom:36px;max-width:500px;margin-left:auto;margin-right:auto;position:relative;z-index:1;font-weight:300}
+.btn-white{
+  background:#fff;color:var(--red);border:none;
+  padding:16px 40px;font-family:'DM Sans',sans-serif;
+  font-size:14px;font-weight:700;cursor:pointer;letter-spacing:0.5px;
+  transition:background 0.2s,color 0.2s,transform 0.2s;
+  display:inline-flex;align-items:center;gap:10px;text-transform:uppercase;position:relative;z-index:1;
+}
+.btn-white:hover{background:#111;color:#fff;transform:translateX(3px)}
+.cta-trust{display:flex;justify-content:center;gap:24px;margin-top:20px;position:relative;z-index:1;flex-wrap:wrap}
+.trust-item{font-size:12px;color:rgba(255,255,255,0.75);display:flex;align-items:center;gap:6px}
+.trust-dot{width:4px;height:4px;background:rgba(255,255,255,0.5);border-radius:50%}
+
+/* TESTIMONIOS */
+.testimonios{background:var(--bg);border-top:1px solid var(--border)}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px}
+.testi-card{
+  background:var(--bg2);border:1px solid var(--border);
+  padding:32px 28px;position:relative;
+  transition:background 0.35s,border-color 0.35s;
+}
+.testi-card::before{
+  content:'"';font-family:'Bebas Neue',sans-serif;font-size:80px;
+  color:rgba(232,0,13,0.12);position:absolute;top:-10px;left:20px;line-height:1;
+}
+.testi-stars{display:flex;gap:3px;margin-bottom:16px}
+.star{color:var(--red);font-size:14px}
+.testi-text{
+  font-size:14px;color:var(--muted);line-height:1.8;
+  font-style:italic;margin-bottom:24px;position:relative;z-index:1;
+  transition:color 0.35s;
+}
+.testi-author{display:flex;align-items:center;gap:12px;border-top:1px solid var(--border);padding-top:18px;transition:border-color 0.35s}
+.testi-avatar{
+  width:42px;height:42px;border-radius:50%;
+  background:var(--red);display:flex;align-items:center;
+  justify-content:center;font-family:'Bebas Neue',sans-serif;
+  font-size:16px;color:#fff;flex-shrink:0;
+}
+.testi-info h5{font-size:14px;font-weight:600;color:var(--text);margin-bottom:2px;transition:color 0.35s}
+.testi-info span{font-size:12px;color:var(--muted2);transition:color 0.35s}
+
+/* FORMULARIO */
+.contacto{background:var(--bg2);border-top:1px solid var(--border)}
+.contacto-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.contacto-text p{font-size:15px;color:var(--muted);line-height:1.8;margin-bottom:28px;font-weight:300;transition:color 0.35s}
+.contacto-perks{display:flex;flex-direction:column;gap:14px;margin-top:8px}
+.perk{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--text);transition:color 0.35s}
+.perk-dot{width:8px;height:8px;background:var(--red);flex-shrink:0}
+.form-card{
+  background:var(--bg);border:1px solid var(--border);padding:40px;
+  transition:background 0.35s,border-color 0.35s;
+}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.form-group label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted2);font-weight:600;transition:color 0.35s}
+.form-group input{
+  background:var(--bg2);border:1px solid var(--border);
+  color:var(--text);padding:12px 16px;font-family:'DM Sans',sans-serif;font-size:14px;
+  outline:none;transition:border-color 0.2s,background 0.35s,color 0.35s;
+}
+.form-group input:focus{border-color:var(--red)}
+.form-group input::placeholder{color:var(--muted3)}
+.btn-form{
+  width:100%;background:var(--red);color:#fff;border:none;
+  padding:15px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;
+  cursor:pointer;letter-spacing:0.5px;text-transform:uppercase;
+  transition:background 0.2s,transform 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.btn-form:hover{background:var(--red-dark);transform:translateY(-2px)}
+.form-note{font-size:11px;color:var(--muted2);text-align:center;margin-top:12px;transition:color 0.35s}
+/* success state */
+.form-success{
+  display:none;text-align:center;padding:32px 0;
+}
+.form-success .check-circle{
+  width:56px;height:56px;background:var(--red);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 16px;
+}
+.form-success h4{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--text);margin-bottom:8px;transition:color 0.35s}
+.form-success p{font-size:14px;color:var(--muted);transition:color 0.35s}
+
+/* CHATBOT FAB */
+#chat-fab{
+  position:fixed;bottom:88px;right:28px;z-index:998;
+  width:52px;height:52px;border-radius:50%;border:none;
+  background:var(--red);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(232,0,13,0.4);
+  transition:transform 0.2s,box-shadow 0.2s;
+}
+#chat-fab:hover{transform:scale(1.1);box-shadow:0 6px 28px rgba(232,0,13,0.5)}
+#chat-fab svg{width:24px;height:24px;fill:#fff}
+.chat-tooltip{
+  position:absolute;right:64px;top:50%;transform:translateY(-50%);
+  background:var(--text);color:var(--bg);
+  font-size:12px;font-weight:600;white-space:nowrap;
+  padding:6px 12px;pointer-events:none;
+  opacity:0;transition:opacity 0.2s;
+  font-family:'DM Sans',sans-serif;
+}
+#chat-fab:hover .chat-tooltip{opacity:1}
+
+/* ── CHATBOT POPUP ── */
+#chatbot-overlay{
+  position:fixed;inset:0;z-index:1100;
+  background:rgba(0,0,0,0.45);
+  opacity:0;pointer-events:none;
+  transition:opacity 0.3s;
+}
+#chatbot-overlay.open{opacity:1;pointer-events:all}
+
+#chatbot-popup{
+  position:fixed;bottom:100px;right:28px;z-index:1200;
+  width:380px;max-width:calc(100vw - 40px);
+  height:560px;max-height:calc(100vh - 120px);
+  background:var(--bg);border:1px solid var(--border);
+  display:flex;flex-direction:column;
+  transform:translateY(20px) scale(0.96);opacity:0;pointer-events:none;
+  transition:transform 0.3s cubic-bezier(.34,1.56,.64,1),opacity 0.3s;
+  box-shadow:0 24px 60px rgba(0,0,0,0.3);
+}
+#chatbot-popup.open{transform:translateY(0) scale(1);opacity:1;pointer-events:all}
+
+.cb-header{
+  background:var(--red);padding:16px 18px;
+  display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
+}
+.cb-header-left{display:flex;align-items:center;gap:10px}
+.cb-avatar{
+  width:36px;height:36px;border-radius:50%;
+  background:rgba(255,255,255,0.2);
+  display:flex;align-items:center;justify-content:center;
+}
+.cb-avatar svg{width:18px;height:18px;fill:#fff}
+.cb-header-info h4{font-size:14px;font-weight:600;color:#fff;margin-bottom:1px}
+.cb-status{display:flex;align-items:center;gap:5px;font-size:11px;color:rgba(255,255,255,0.8)}
+.cb-status-dot{width:6px;height:6px;background:#4ade80;border-radius:50%;animation:pulse 2s infinite}
+.cb-close{
+  background:none;border:none;cursor:pointer;
+  color:rgba(255,255,255,0.8);font-size:20px;line-height:1;
+  padding:4px;transition:color 0.2s;
+}
+.cb-close:hover{color:#fff}
+
+.cb-messages{
+  flex:1;overflow-y:auto;padding:16px;
+  display:flex;flex-direction:column;gap:12px;
+  scroll-behavior:smooth;
+}
+.cb-messages::-webkit-scrollbar{width:4px}
+.cb-messages::-webkit-scrollbar-track{background:transparent}
+.cb-messages::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+.cb-msg{display:flex;gap:8px;align-items:flex-end;max-width:92%}
+.cb-msg.bot{align-self:flex-start}
+.cb-msg.user{align-self:flex-end;flex-direction:row-reverse}
+
+.cb-msg-avatar{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--red);display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;margin-bottom:2px;
+}
+.cb-msg-avatar svg{width:14px;height:14px;fill:#fff}
+
+.cb-bubble{
+  padding:10px 14px;font-size:13px;line-height:1.6;
+  max-width:100%;
+}
+.cb-msg.bot .cb-bubble{
+  background:var(--bg2);border:1px solid var(--border);
+  color:var(--text);border-radius:0 12px 12px 12px;
+  transition:background 0.35s,border-color 0.35s,color 0.35s;
+}
+.cb-msg.user .cb-bubble{
+  background:var(--red);color:#fff;
+  border-radius:12px 0 12px 12px;
+}
+
+.cb-options{
+  display:flex;flex-direction:column;gap:6px;
+  margin-top:4px;align-self:flex-start;width:100%;
+}
+.cb-opt-btn{
+  background:var(--bg);border:1px solid var(--border);
+  color:var(--text);padding:9px 14px;
+  font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;
+  cursor:pointer;text-align:left;
+  transition:background 0.2s,border-color 0.2s,color 0.35s;
+  display:flex;align-items:center;gap:8px;
+}
+.cb-opt-btn:hover{background:var(--bg2);border-color:var(--red);color:var(--red)}
+.cb-opt-arrow{color:var(--red);font-size:11px;margin-left:auto}
+
+.cb-typing{display:flex;align-items:center;gap:4px;padding:12px 14px}
+.cb-typing span{
+  width:6px;height:6px;background:var(--muted2);border-radius:50%;
+  animation:typing 1.2s infinite;
+}
+.cb-typing span:nth-child(2){animation-delay:0.2s}
+.cb-typing span:nth-child(3){animation-delay:0.4s}
+@keyframes typing{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-6px)}}
+
+.cb-input-area{
+  padding:12px;border-top:1px solid var(--border);
+  display:flex;gap:8px;flex-shrink:0;
+  transition:border-color 0.35s;
+}
+.cb-input{
+  flex:1;background:var(--bg2);border:1px solid var(--border);
+  color:var(--text);padding:10px 14px;
+  font-family:'DM Sans',sans-serif;font-size:13px;
+  outline:none;resize:none;
+  transition:border-color 0.2s,background 0.35s,color 0.35s;
+}
+.cb-input:focus{border-color:var(--red)}
+.cb-input::placeholder{color:var(--muted3)}
+.cb-send{
+  width:40px;height:40px;background:var(--red);border:none;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:background 0.2s,transform 0.15s;flex-shrink:0;
+}
+.cb-send:hover{background:var(--red-dark)}
+.cb-send:active{transform:scale(0.92)}
+.cb-send svg{width:16px;height:16px;fill:#fff}
+.cb-send:disabled{opacity:0.5;cursor:not-allowed}
+
+/* FOOTER */
+footer{
+  background:var(--footer-bg);border-top:1px solid var(--border);
+  padding:32px 5%;display:flex;justify-content:space-between;align-items:center;
+  transition:background 0.35s,border-color 0.35s;
+}
+.footer-logo{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;color:var(--muted);transition:color 0.35s}
+.footer-copy{font-size:12px;color:var(--muted3);transition:color 0.35s}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.hero-content>*{animation:fadeUp 0.7s ease both}
+.hero-content>*:nth-child(1){animation-delay:0.1s}
+.hero-content>*:nth-child(2){animation-delay:0.2s}
+.hero-content>*:nth-child(3){animation-delay:0.3s}
+.hero-content>*:nth-child(4){animation-delay:0.4s}
+.hero-content>*:nth-child(5){animation-delay:0.5s}
+
+/* RESPONSIVE */
+@media(max-width:1000px){
+  .hero{grid-template-columns:1fr}
+  .hero-stats{flex-direction:row;padding-left:0;border-left:none;border-top:1px solid var(--border);padding-top:28px;gap:32px}
+}
+@media(max-width:900px){
+  .problema-inner,.solucion-grid,.auto-inner,.contacto-inner{grid-template-columns:1fr;gap:36px}
+  .steps-grid{grid-template-columns:1fr 1fr}
+  .bene-grid{grid-template-columns:1fr 1fr}
+  .obj-grid{grid-template-columns:1fr}
+  .testi-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .steps-grid,.bene-grid{grid-template-columns:1fr}
+  h1{font-size:44px}
+  .hero-stats{flex-direction:column;gap:16px}
+  #theme-toggle{bottom:20px;right:20px}
+}
+</style>
+</head>
+<body>
+
+<!-- TOGGLE DARK/LIGHT -->
+<button id="theme-toggle" title="Cambiar tema" aria-label="Cambiar tema">
+  <!-- Ícono sol (visible en dark) / luna (visible en light) -->
+  <svg id="icon-sun" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:block">
+    <circle cx="12" cy="12" r="4"/>
+    <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"/>
+  </svg>
+  <svg id="icon-moon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="display:none">
+    <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 009.79 9.79z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</button>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <svg height="30" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="40,5 70,65 10,65" fill="#E8000D"/>
+      <line x1="28" y1="62" x2="40" y2="22" stroke="white" stroke-width="5"/>
+      <line x1="37" y1="62" x2="49" y2="22" stroke="white" stroke-width="5"/>
+      <line x1="46" y1="62" x2="58" y2="22" stroke="white" stroke-width="5"/>
+    </svg>
+    <span>MarketingIAPro</span>
+  </div>
+  <button class="nav-cta" onclick="document.querySelector('.cta-final').scrollIntoView({behavior:'smooth'})">Agenda tu sesión →</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><span class="hero-badge-dot"></span>Sistemas de Marketing con IA</div>
+    <h1>Escala tu empresa con marketing<br><span>automatizado</span><br>con IA</h1>
+    <p class="hero-sub">Deja de depender de esfuerzos manuales y convierte tu marketing en una máquina predecible de crecimiento que genera clientes todos los días.</p>
+    <div class="hero-bullets">
+      <div class="bullet"><div class="bullet-icon"><svg viewBox="0 0 12 10"><polyline points="1,5 4,8 11,1" stroke="white" stroke-width="2" fill="none"/></svg></div>Automatiza la captación de leads cualificados</div>
+      <div class="bullet"><div class="bullet-icon"><svg viewBox="0 0 12 10"><polyline points="1,5 4,8 11,1" stroke="white" stroke-width="2" fill="none"/></svg></div>Aumenta tus ventas sin aumentar tu equipo</div>
+      <div class="bullet"><div class="bullet-icon"><svg viewBox="0 0 12 10"><polyline points="1,5 4,8 11,1" stroke="white" stroke-width="2" fill="none"/></svg></div>Toma decisiones basadas en datos reales, no suposiciones</div>
+    </div>
+    <div class="hero-cta-group">
+      <button class="btn-primary" onclick="document.querySelector('.cta-final').scrollIntoView({behavior:'smooth'})">Agenda tu sesión estratégica gratuita →</button>
+      <span class="cta-note">Sin compromiso · Diagnóstico personalizado · Resultados medibles</span>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-card"><div class="stat-num">3X</div><div class="stat-label">Más leads calificados</div></div>
+    <div class="stat-card"><div class="stat-num">70%</div><div class="stat-label">Ahorro operativo</div></div>
+    <div class="stat-card"><div class="stat-num">24/7</div><div class="stat-label">Sistema activo</div></div>
+  </div>
+</section>
+
+<!-- PROBLEMA -->
+<section class="problema">
+  <div class="problema-inner">
+    <div class="problema-text">
+      <p class="section-label">El problema</p>
+      <h2>Tu negocio crece… pero no de forma <span style="color:var(--red)">sostenible</span></h2>
+      <p>Hoy, muchas pymes dependen demasiado de esfuerzos manuales, recomendaciones o campañas que no generan resultados constantes.</p>
+      <p>Eso provoca inestabilidad, falta de previsibilidad y una sobrecarga operativa que te impide escalar.</p>
+      <div class="problema-highlight"><p>Y lo peor: sientes que todo depende de ti.</p></div>
+    </div>
+    <div class="problema-pains">
+      <div class="pain-item"><div class="pain-x">✕</div><span class="pain-text">Ingresos impredecibles mes a mes</span></div>
+      <div class="pain-item"><div class="pain-x">✕</div><span class="pain-text">Campañas que no generan resultados constantes</span></div>
+      <div class="pain-item"><div class="pain-x">✕</div><span class="pain-text">Seguimiento manual que consume todo tu tiempo</span></div>
+      <div class="pain-item"><div class="pain-x">✕</div><span class="pain-text">Dificultad para escalar sin contratar más gente</span></div>
+      <div class="pain-item"><div class="pain-x">✕</div><span class="pain-text">Dependencia total del esfuerzo humano</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUCIÓN -->
+<section class="solucion">
+  <div class="solucion-grid">
+    <div>
+      <p class="section-label">La solución</p>
+      <h2>Transformamos tu marketing en un <span style="color:var(--red)">sistema automático</span></h2>
+      <div class="solucion-features">
+        <div class="feature-row"><div class="feature-num">01</div><div class="feature-info"><h4>Generación constante de leads</h4><p>Estrategias digitales que atraen prospectos calificados todos los días.</p></div></div>
+        <div class="feature-row"><div class="feature-num">02</div><div class="feature-info"><h4>Calificación automática con IA</h4><p>La IA analiza y prioriza cada lead para que solo atiendas a quienes van a comprar.</p></div></div>
+        <div class="feature-row"><div class="feature-num">03</div><div class="feature-info"><h4>Seguimiento 24/7 automatizado</h4><p>Emails, mensajes y procesos que trabajan por ti mientras te enfocas en lo importante.</p></div></div>
+        <div class="feature-row"><div class="feature-num">04</div><div class="feature-info"><h4>Escalabilidad sin fricción</h4><p>Crece sin necesidad de aumentar tu equipo ni tu carga operativa.</p></div></div>
+      </div>
+    </div>
+    <div class="solucion-visual">
+      <div class="solucion-visual-inner">
+        <div class="sys-block"><div class="sys-block-label">Entrada del sistema</div><div class="sys-block-val">Tráfico orgánico + Paid media + SEO</div></div>
+        <div class="sys-arrow">↓</div>
+        <div class="sys-block"><div class="sys-block-label">Motor de IA</div><div class="sys-block-val">Calificación automática de leads en tiempo real</div></div>
+        <div class="sys-arrow">↓</div>
+        <div class="sys-block"><div class="sys-block-label">Nurturing automático</div><div class="sys-block-val">Secuencias de email + WhatsApp + retargeting</div></div>
+        <div class="sys-arrow">↓</div>
+        <div class="sys-block sys-result"><div class="sys-block-label" style="color:var(--red)">Resultado</div><div class="sys-block-val" style="font-weight:600">Clientes listos para comprar → Tu equipo cierra</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section class="como">
+  <p class="section-label">El proceso</p>
+  <h2>Así funciona tu nuevo sistema de <span style="color:var(--red)">crecimiento</span></h2>
+  <div class="steps-grid">
+    <div class="step"><span class="step-num">1</span><div class="step-icon"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7" stroke="white" stroke-width="1.5" fill="none"/><circle cx="10" cy="10" r="2" fill="white"/></svg></div><h3>Atraes clientes potenciales</h3><p>Estrategias digitales optimizadas que te ponen frente a tu cliente ideal en el momento exacto.</p><div class="step-bar"></div></div>
+    <div class="step"><span class="step-num">2</span><div class="step-icon"><svg viewBox="0 0 20 20"><path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm-1 11V7l5 3-5 3z" fill="white"/></svg></div><h3>Capturas y cualificas</h3><p>La IA analiza cada lead automáticamente y prioriza las oportunidades reales de venta.</p><div class="step-bar"></div></div>
+    <div class="step"><span class="step-num">3</span><div class="step-icon"><svg viewBox="0 0 20 20"><path d="M4 5h12v2H4zm0 4h12v2H4zm0 4h8v2H4z" fill="white"/></svg></div><h3>Automatizas el seguimiento</h3><p>Emails, mensajes y procesos trabajan por ti 24/7 sin que tengas que mover un dedo.</p><div class="step-bar"></div></div>
+    <div class="step"><span class="step-num">4</span><div class="step-icon"><svg viewBox="0 0 20 20"><path d="M3 14l4-4 3 3 4-5 4 6H3z" fill="white"/></svg></div><h3>Conviertes más y mejor</h3><p>Solo te enfocas en cerrar clientes que ya están listos para comprar.</p><div class="step-bar"></div></div>
+  </div>
+</section>
+
+<!-- BENEFICIOS -->
+<section class="beneficios">
+  <p class="section-label">Lo que obtienes</p>
+  <h2>Resultados reales con un sistema <span style="color:var(--red)">inteligente</span></h2>
+  <div class="bene-grid">
+    <div class="bene-card"><div style="font-size:22px">📈</div><h4>Más clientes, menos esfuerzo</h4><p>Genera leads de forma constante sin depender del boca a boca ni de esfuerzos manuales.</p></div>
+    <div class="bene-card"><div style="font-size:22px">⏱</div><h4>Tiempo recuperado</h4><p>Automatiza los procesos repetitivos para que tu equipo se enfoque en lo que mueve el negocio.</p></div>
+    <div class="bene-card"><div style="font-size:22px">💰</div><h4>Mayor ROI en marketing</h4><p>Cada peso de tu presupuesto está respaldado por datos y optimizado por IA.</p></div>
+    <div class="bene-card"><div style="font-size:22px">🤖</div><h4>IA aplicada a resultados</h4><p>Implementamos inteligencia artificial de forma práctica y directamente vinculada a tu crecimiento.</p></div>
+    <div class="bene-card"><div style="font-size:22px">📊</div><h4>Control total con métricas</h4><p>Dashboards claros que te muestran exactamente qué funciona y dónde invertir más.</p></div>
+    <div class="bene-card"><div style="font-size:22px">⚡</div><h4>Escalabilidad sin límites</h4><p>Tu sistema crece contigo sin contratar más personal ni aumentar tu carga operativa.</p></div>
+  </div>
+</section>
+
+<!-- AUTORIDAD -->
+<section class="autoridad">
+  <div class="auto-inner">
+    <div>
+      <p class="section-label">Por qué nosotros</p>
+      <h2>Esto no es marketing <span style="color:var(--red)">tradicional</span></h2>
+      <p style="font-size:14px;color:var(--muted);line-height:1.8;margin-bottom:28px;font-weight:300;transition:color 0.35s">No trabajamos con suposiciones ni tácticas aisladas. Creamos sistemas completos diseñados para generar resultados medibles desde el día uno.</p>
+      <div class="auto-pillars">
+        <div class="pillar"><div class="pillar-line"></div><div class="pillar-content"><h4>Datos reales</h4><p>Cada decisión está respaldada por métricas, no por intuición. Medimos todo.</p></div></div>
+        <div class="pillar"><div class="pillar-line"></div><div class="pillar-content"><h4>Automatización inteligente</h4><p>Sistemas que aprenden y se optimizan solos para maximizar tu inversión.</p></div></div>
+        <div class="pillar"><div class="pillar-line"></div><div class="pillar-content"><h4>Estrategia personalizada</h4><p>Ninguna implementación es igual. Diseñamos el sistema exacto que tu negocio necesita.</p></div></div>
+      </div>
+    </div>
+    <div class="auto-quote">
+      <p>Cada implementación está diseñada para generar resultados medibles. No vendemos servicios de marketing, construimos el sistema de crecimiento de tu empresa.</p>
+      <cite>— MarketingIAPro · Sistema, no servicio</cite>
+    </div>
+  </div>
+</section>
+
+<!-- OBJECIONES -->
+<section class="objeciones">
+  <p class="section-label">¿Es para ti?</p>
+  <h2>Sé honesto contigo <span style="color:var(--red)">mismo</span></h2>
+  <div class="obj-grid">
+    <div class="obj-col obj-col-yes">
+      <h3>✓ Este sistema es para ti si…</h3>
+      <div class="obj-list">
+        <div class="obj-item"><div class="obj-check">✓</div>Quieres escalar tu empresa de forma estructurada</div>
+        <div class="obj-item"><div class="obj-check">✓</div>Estás cansado de resultados inconsistentes</div>
+        <div class="obj-item"><div class="obj-check">✓</div>Buscas implementar IA de forma práctica</div>
+        <div class="obj-item"><div class="obj-check">✓</div>Entiendes que el crecimiento requiere inversión inteligente</div>
+        <div class="obj-item"><div class="obj-check">✓</div>Quieres dejar de depender de ti mismo para crecer</div>
+      </div>
+    </div>
+    <div class="obj-col obj-col-no">
+      <h3>✕ No es para ti si…</h3>
+      <div class="obj-list">
+        <div class="obj-item"><div class="obj-cross">✕</div>Buscas resultados inmediatos sin inversión</div>
+        <div class="obj-item"><div class="obj-cross">✕</div>No estás dispuesto a innovar o cambiar procesos</div>
+        <div class="obj-item"><div class="obj-cross">✕</div>Prefieres seguir con métodos tradicionales que no escalan</div>
+        <div class="obj-item"><div class="obj-cross">✕</div>No tienes un negocio establecido con tracción</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final">
+  <div class="cta-final-grid"></div>
+  <h2>Descubre cómo automatizar<br>el crecimiento de tu empresa</h2>
+  <p>En una sesión estratégica analizamos tu negocio y te mostramos exactamente cómo implementar este sistema paso a paso.</p>
+  <button class="btn-white">Agenda tu sesión gratuita ahora →</button>
+  <div class="cta-trust">
+    <span class="trust-item"><span class="trust-dot"></span>Diagnóstico sin compromiso</span>
+    <span class="trust-item"><span class="trust-dot"></span>Estrategia personalizada</span>
+    <span class="trust-item"><span class="trust-dot"></span>Sin presión de venta</span>
+  </div>
+</section>
+
+<!-- TESTIMONIOS -->
+<section class="testimonios">
+  <p class="section-label">Casos reales</p>
+  <h2>Lo que dicen quienes ya <span style="color:var(--red)">implementaron</span> el sistema</h2>
+  <div class="testi-grid">
+
+    <div class="testi-card">
+      <div class="testi-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <p class="testi-text">Pasamos de depender 100% del boca a boca a tener un flujo constante de leads calificados. En 60 días triplicamos las reuniones comerciales sin contratar a nadie más.</p>
+      <div class="testi-author">
+        <div class="testi-avatar">RC</div>
+        <div class="testi-info">
+          <h5>Ricardo Campos</h5>
+          <span>Director General · Constructora Campos</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card">
+      <div class="testi-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <p class="testi-text">Lo que más me sorprendió fue la calificación automática. Antes perdía horas en prospectos que nunca iban a comprar. Ahora mi equipo solo habla con quienes realmente tienen intención.</p>
+      <div class="testi-author">
+        <div class="testi-avatar">SV</div>
+        <div class="testi-info">
+          <h5>Sofía Vargas</h5>
+          <span>Fundadora · Clínica EstéticaPro</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="testi-card">
+      <div class="testi-stars">
+        <span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span>
+      </div>
+      <p class="testi-text">El sistema trabaja mientras duermo. Las secuencias automáticas de seguimiento recuperaron clientes que dábamos por perdidos. El ROI en el primer trimestre fue brutal.</p>
+      <div class="testi-author">
+        <div class="testi-avatar">AM</div>
+        <div class="testi-info">
+          <h5>Alejandro Mora</h5>
+          <span>CEO · Grupo Logístico Mora</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FORMULARIO DE CONTACTO -->
+<section class="contacto">
+  <div class="contacto-inner">
+    <div class="contacto-text">
+      <p class="section-label">Agenda tu sesión</p>
+      <h2>Hablemos de tu <span style="color:var(--red)">negocio</span></h2>
+      <p>Cuéntanos sobre tu empresa y te contactamos en menos de 24 horas para agendar tu diagnóstico estratégico gratuito.</p>
+      <div class="contacto-perks">
+        <div class="perk"><div class="perk-dot"></div>Análisis personalizado de tu situación actual</div>
+        <div class="perk"><div class="perk-dot"></div>Propuesta de sistema adaptada a tu negocio</div>
+        <div class="perk"><div class="perk-dot"></div>Sin compromiso ni presión de venta</div>
+        <div class="perk"><div class="perk-dot"></div>Respuesta garantizada en menos de 24 hrs</div>
+      </div>
+    </div>
+    <div class="form-card">
+      <div id="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nombre completo</label>
+            <input type="text" id="f-nombre" placeholder="Tu nombre" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label>Empresa</label>
+            <input type="text" id="f-empresa" placeholder="Nombre de tu empresa" autocomplete="off">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Correo electrónico</label>
+          <input type="email" id="f-email" placeholder="correo@tuempresa.com" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label>WhatsApp</label>
+          <input type="tel" id="f-whatsapp" placeholder="+52 55 0000 0000" autocomplete="off">
+        </div>
+        <button class="btn-form" onclick="submitForm()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1l7 7-7 7M1 8h14" stroke="white" stroke-width="1.8" stroke-linecap="round"/></svg>
+          Solicitar mi diagnóstico gratuito
+        </button>
+        <p class="form-note">Tus datos están seguros · Solo te contactaremos para tu diagnóstico</p>
+      </div>
+      <div class="form-success" id="form-success">
+        <div class="check-circle">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><polyline points="4,12 9,17 20,7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h4>¡Solicitud recibida!</h4>
+        <p>Te contactaremos en menos de 24 horas para agendar tu sesión estratégica.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">MarketingIAPro</span>
+  <span class="footer-copy">© 2025 MarketingIAPro · Todos los derechos reservados</span>
+</footer>
+
+<!-- CHATBOT OVERLAY -->
+<div id="chatbot-overlay" onclick="closeChat()"></div>
+
+<!-- CHATBOT POPUP -->
+<div id="chatbot-popup">
+  <div class="cb-header">
+    <div class="cb-header-left">
+      <div class="cb-avatar">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+      </div>
+      <div class="cb-header-info">
+        <h4>Asistente MarketingIAPro</h4>
+        <div class="cb-status"><span class="cb-status-dot"></span>En línea ahora</div>
+      </div>
+    </div>
+    <button class="cb-close" onclick="closeChat()">✕</button>
+  </div>
+  <div class="cb-messages" id="cb-messages"></div>
+  <div class="cb-input-area">
+    <textarea class="cb-input" id="cb-input" rows="1" placeholder="Escribe tu pregunta..." onkeydown="handleKey(event)"></textarea>
+    <button class="cb-send" id="cb-send" onclick="sendMessage()">
+      <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- CHATBOT FAB -->
+<button id="chat-fab" onclick="toggleChat()">
+  <svg id="fab-icon-open" viewBox="0 0 24 24"><path d="M20 2H4C2.9 2 2 2.9 2 4v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 10H6V10h12v2zm0-3H6V7h12v2z"/></svg>
+  <svg id="fab-icon-close" viewBox="0 0 24 24" style="display:none"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+  <span class="chat-tooltip">¿Tienes dudas? Chatea aquí</span>
+</button>
+
+<script>
+/* ── THEME TOGGLE ── */
+const html = document.documentElement;
+const btn  = document.getElementById('theme-toggle');
+const sun  = document.getElementById('icon-sun');
+const moon = document.getElementById('icon-moon');
+const saved = localStorage.getItem('mip-theme') || 'dark';
+html.setAttribute('data-theme', saved);
+updateIcons(saved);
+btn.addEventListener('click', () => {
+  const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  localStorage.setItem('mip-theme', next);
+  updateIcons(next);
+});
+function updateIcons(t){
+  sun.style.display  = t==='dark'  ? 'block':'none';
+  moon.style.display = t==='light' ? 'block':'none';
+}
+
+/* ── FORM ── */
+function submitForm(){
+  var n=document.getElementById('f-nombre').value.trim();
+  var e=document.getElementById('f-empresa').value.trim();
+  var m=document.getElementById('f-email').value.trim();
+  var w=document.getElementById('f-whatsapp').value.trim();
+  if(!n||!e||!m||!w){alert('Por favor completa todos los campos.');return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(m)){alert('Correo electrónico inválido.');return;}
+  document.getElementById('contact-form').style.display='none';
+  document.getElementById('form-success').style.display='block';
+}
+
+/* ── CHATBOT ── */
+var chatOpen = false;
+var isTyping = false;
+var leadData = {};
+var conversationHistory = [];
+
+var SYSTEM_PROMPT = `Eres el asistente virtual de MarketingIAPro, una agencia especializada en sistemas de marketing automatizados con Inteligencia Artificial para pymes.
+
+Tu personalidad: profesional, directo, empático y orientado a resultados. Hablas en español, tuteas al usuario, usas lenguaje claro sin tecnicismos innecesarios.
+
+Tu misión principal tiene DOS objetivos:
+1. CALIFICAR LEADS: Recopilar de forma natural nombre, empresa, correo y WhatsApp para agendar una sesión estratégica gratuita.
+2. RESPONDER PREGUNTAS: Resolver dudas sobre los servicios, proceso y resultados de MarketingIAPro.
+
+SERVICIOS que ofrece MarketingIAPro:
+- Sistemas de captación y calificación automática de leads con IA
+- Automatización de seguimiento (email, WhatsApp, retargeting)
+- Estrategia de contenido y paid media optimizados por datos
+- Dashboards de métricas y reportes en tiempo real
+- Implementación de CRM y flujos de ventas automatizados
+
+PROCESO: Sesión estratégica gratuita → Diagnóstico → Propuesta personalizada → Implementación en 4-6 semanas.
+
+PREGUNTAS FRECUENTES:
+- ¿Cuánto cuesta? → Los precios dependen del tamaño y necesidades del negocio. La sesión estratégica es gratuita y en ella presentamos la propuesta.
+- ¿Cuánto tiempo tarda? → La implementación inicial toma 4-6 semanas. Resultados visibles desde la semana 2-3.
+- ¿Para qué tipo de empresas? → Pymes con ticket de venta medio-alto que quieran escalar de forma estructurada.
+
+FLUJO DE CALIFICACIÓN: Cuando el usuario muestre interés real, pide de forma natural: primero su nombre, luego empresa, luego correo, luego WhatsApp. Al final confirma los datos y diles que un especialista los contactará en menos de 24 horas.
+
+IMPORTANTE: Sé conversacional, no hagas todas las preguntas de una sola vez. Máximo respuestas de 3-4 oraciones. No uses listas largas. Si preguntan algo que no sabes, diles que un especialista puede resolver esa duda en la sesión estratégica.`;
+
+function toggleChat(){
+  chatOpen ? closeChat() : openChat();
+}
+function openChat(){
+  chatOpen = true;
+  document.getElementById('chatbot-popup').classList.add('open');
+  document.getElementById('chatbot-overlay').classList.add('open');
+  document.getElementById('fab-icon-open').style.display='none';
+  document.getElementById('fab-icon-close').style.display='block';
+  if(document.getElementById('cb-messages').children.length === 0){
+    setTimeout(()=>botMessage("¡Hola! 👋 Soy el asistente de **MarketingIAPro**. Puedo ayudarte a conocer cómo funcionamos o resolver tus dudas. ¿Por dónde quieres empezar?", [
+      "¿Cómo funciona el sistema de IA?",
+      "¿Qué resultados puedo esperar?",
+      "Quiero agendar una sesión gratuita",
+      "¿Cuánto cuesta?"
+    ]),400);
+  }
+}
+function closeChat(){
+  chatOpen = false;
+  document.getElementById('chatbot-popup').classList.remove('open');
+  document.getElementById('chatbot-overlay').classList.remove('open');
+  document.getElementById('fab-icon-open').style.display='block';
+  document.getElementById('fab-icon-close').style.display='none';
+}
+
+function handleKey(e){
+  if(e.key==='Enter' && !e.shiftKey){e.preventDefault();sendMessage();}
+}
+
+function sendMessage(text){
+  var input = document.getElementById('cb-input');
+  var msg   = text || input.value.trim();
+  if(!msg || isTyping) return;
+  if(!text) input.value='';
+  addMessage(msg,'user');
+  getAIResponse(msg);
+}
+
+function addMessage(text, role, options){
+  var container = document.getElementById('cb-messages');
+  var wrapper   = document.createElement('div');
+  wrapper.className = 'cb-msg ' + role;
+
+  if(role === 'bot'){
+    var av = document.createElement('div');
+    av.className = 'cb-msg-avatar';
+    av.innerHTML = '<svg viewBox="0 0 24 24" fill="white" width="14" height="14"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>';
+    wrapper.appendChild(av);
+  }
+
+  var col = document.createElement('div');
+  col.style.display='flex';col.style.flexDirection='column';col.style.maxWidth='85%';
+
+  var bubble = document.createElement('div');
+  bubble.className = 'cb-bubble';
+  bubble.innerHTML = text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  col.appendChild(bubble);
+
+  if(options && options.length){
+    var optWrap = document.createElement('div');
+    optWrap.className='cb-options';
+    options.forEach(function(opt){
+      var b=document.createElement('button');
+      b.className='cb-opt-btn';
+      b.innerHTML=opt+'<span class="cb-opt-arrow">→</span>';
+      b.onclick=function(){
+        disableOptions(optWrap);
+        sendMessage(opt);
+      };
+      optWrap.appendChild(b);
+    });
+    col.appendChild(optWrap);
+  }
+  wrapper.appendChild(col);
+  container.appendChild(wrapper);
+  container.scrollTop = container.scrollHeight;
+}
+
+function disableOptions(wrap){
+  wrap.querySelectorAll('.cb-opt-btn').forEach(function(b){b.disabled=true;b.style.opacity='0.4';b.style.cursor='default';});
+}
+
+function showTyping(){
+  var container = document.getElementById('cb-messages');
+  var t = document.createElement('div');
+  t.className='cb-msg bot';t.id='cb-typing-indicator';
+  t.innerHTML='<div class="cb-msg-avatar"><svg viewBox="0 0 24 24" fill="white" width="14" height="14"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg></div><div class="cb-bubble" style="background:var(--bg2);border:1px solid var(--border);border-radius:0 12px 12px 12px"><div class="cb-typing"><span></span><span></span><span></span></div></div>';
+  container.appendChild(t);
+  container.scrollTop=container.scrollHeight;
+}
+function hideTyping(){
+  var t=document.getElementById('cb-typing-indicator');
+  if(t) t.remove();
+}
+
+function botMessage(text, options){
+  addMessage(text,'bot',options);
+}
+
+// ── PROXY URL — cambia esto por tu URL de Vercel tras el despliegue ──
+var PROXY_URL = 'https://TU-PROXY.vercel.app/api/chat';
+
+async function getAIResponse(userMsg){
+  isTyping=true;
+  document.getElementById('cb-send').disabled=true;
+  showTyping();
+
+  conversationHistory.push({role:'user',content:userMsg});
+
+  try{
+    var res = await fetch(PROXY_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        system: SYSTEM_PROMPT,
+        messages: conversationHistory
+      })
+    });
+    var data = await res.json();
+    var reply = data.content && data.content[0] ? data.content[0].text : 'Disculpa, hubo un problema. ¿Puedes repetir tu pregunta?';
+    conversationHistory.push({role:'assistant',content:reply});
+    hideTyping();
+
+    // Detectar si el bot recopiló datos completos para mostrar opción de agendar
+    var hasContact = reply.toLowerCase().includes('especialista') && reply.toLowerCase().includes('contactar');
+    var opts = null;
+    if(hasContact){
+      opts = ['Sí, confirmo mis datos','Quiero agregar algo más'];
+    } else if(reply.toLowerCase().includes('¿algo más') || reply.toLowerCase().includes('alguna otra')){
+      opts = ['Quiero agendar mi sesión','Tengo otra pregunta'];
+    }
+    botMessage(reply, opts);
+  } catch(err){
+    hideTyping();
+    botMessage('Lo siento, tuve un problema de conexión. Por favor escríbenos directo a nuestro WhatsApp o intenta de nuevo en un momento.');
+  }
+  isTyping=false;
+  document.getElementById('cb-send').disabled=false;
+}
+</script>
+</body>
+</html>
