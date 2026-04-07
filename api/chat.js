@@ -7,6 +7,7 @@ export default async function handler(req, res) {
   const allowedOrigins = [
     'https://marketingiapro.com',
     'https://www.marketingiapro.com',
+    'https://magical-sawine-cc0c9c.netlify.app/',
     'http://localhost',        // para pruebas locales
     'http://127.0.0.1',
     'null'                     // para abrir el HTML directo en el navegador
