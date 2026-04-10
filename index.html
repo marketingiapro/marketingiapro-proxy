@@ -1077,6 +1077,7 @@ async function getAIResponse(userMsg){
       })
     });
     var data = await res.json();
+    console.log('Respuesta del proxy:', JSON.stringify(data));
     var reply = data.content && data.content[0] ? data.content[0].text : 'Disculpa, hubo un problema. ¿Puedes repetir tu pregunta?';
     conversationHistory.push({role:'assistant',content:reply});
     hideTyping();
