@@ -1,5 +1,5 @@
 // api/chat.js — Proxy seguro para MarketingIAPro Chatbot
-// Usando Google Gemini API
+// Usando Groq API
 export default async function handler(req, res) {
   // ── CORS ──
   const allowedOrigins = [
@@ -28,35 +28,39 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'El campo messages es requerido' });
   }
 
-  // Convertir formato Anthropic → Gemini
-  const geminiMessages = messages.slice(-40).map(m => ({
-    role: m.role === 'assistant' ? 'model' : 'user',
-    parts: [{ text: m.content }]
-  }));
+  // Construir mensajes para Groq (compatible con formato OpenAI)
+  const groqMessages = [];
+  if (system) {
+    groqMessages.push({ role: 'system', content: system });
+  }
+  messages.slice(-40).forEach(m => {
+    groqMessages.push({ role: m.role === 'assistant' ? 'assistant' : 'user', content: m.content });
+  });
 
   try {
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          system_instruction: system ? { parts: [{ text: system }] } : undefined,
-          contents: geminiMessages,
-          generationConfig: { maxOutputTokens: 1000 }
-        })
-      }
-    );
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.GROQ_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: groqMessages,
+        max_tokens: 1000,
+        temperature: 0.7
+      })
+    });
 
     if (!response.ok) {
       const errText = await response.text();
-      console.error('Gemini API error:', response.status, errText);
+      console.error('Groq API error:', response.status, errText);
       return res.status(response.status).json({ error: 'Error al contactar la IA', detail: errText });
     }
 
     const data = await response.json();
-    // Convertir respuesta Gemini → formato Anthropic para que el frontend no cambie
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    // Convertir respuesta Groq → formato Anthropic para que el frontend no cambie
+    const text = data.choices?.[0]?.message?.content || '';
     return res.status(200).json({
       content: [{ type: 'text', text }]
     });
