@@ -66,8 +66,3 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Error interno del servidor' });
   }
 }
-  } catch (err) {
-    console.error('Proxy error:', err);
-    return res.status(500).json({ error: 'Error interno del servidor' });
-  }
-}
