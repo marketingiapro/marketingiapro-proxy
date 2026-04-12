@@ -931,7 +931,7 @@ var isTyping = false;
 var leadData = {};
 var conversationHistory = [];
 
-var SYSTEM_PROMPT = `Eres el asistente virtual de MarketingIAPro, una agencia especializada en sistemas de marketing automatizados con Inteligencia Artificial para pymes.
+var SYSTEM_PROMPT = `Eres el Estratega Senior de MarketingIAPro., una agencia especializada en sistemas de marketing automatizados con Inteligencia Artificial para pymes.
 
 Tu personalidad: profesional, directo, empático y orientado a resultados. Hablas en español, tuteas al usuario, usas lenguaje claro sin tecnicismos innecesarios.
 
@@ -1077,7 +1077,6 @@ async function getAIResponse(userMsg){
       })
     });
     var data = await res.json();
-    console.log('Respuesta del proxy:', JSON.stringify(data));
     var reply = data.content && data.content[0] ? data.content[0].text : 'Disculpa, hubo un problema. ¿Puedes repetir tu pregunta?';
     conversationHistory.push({role:'assistant',content:reply});
     hideTyping();
