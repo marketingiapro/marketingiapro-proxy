@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MarketingIAPro — Dashboard de Contenido</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #E8192C;
+    --red-dark: #B01020;
+    --red-glow: rgba(232,25,44,0.3);
+    --bg: #080808;
+    --bg2: #0f0f0f;
+    --bg3: #161616;
+    --bg4: #1e1e1e;
+    --border: rgba(255,255,255,0.07);
+    --text: #f0f0f0;
+    --text-dim: #888;
+    --text-dimmer: #444;
+    --white: #ffffff;
+    --green: #00c853;
+    --yellow: #ffd600;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* NOISE TEXTURE */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* HEADER */
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 32px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(8,8,8,0.92);
+    backdrop-filter: blur(12px);
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    color: var(--white);
+  }
+
+  .logo-icon {
+    width: 28px;
+    height: 28px;
+    background: var(--red);
+    clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+
+  .badge {
+    background: var(--red);
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .btn-back {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-back:hover { border-color: var(--red); color: var(--text); }
+
+  /* MAIN LAYOUT */
+  main {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    min-height: calc(100vh - 65px);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* LEFT PANEL */
+  .panel-left {
+    border-right: 1px solid var(--border);
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .section-title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+  }
+
+  /* NETWORK SELECTOR */
+  .network-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .network-btn {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 10px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .network-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .network-btn.ig::before { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+  .network-btn.fb::before { background: #1877F2; }
+  .network-btn.tw::before { background: #000; }
+  .network-btn.blog::before { background: linear-gradient(135deg, var(--red), var(--red-dark)); }
+
+  .network-btn.active { border-color: transparent; }
+  .network-btn.active::before { opacity: 0.15; }
+  .network-btn.active { border-color: var(--red); box-shadow: 0 0 20px var(--red-glow); }
+
+  .network-btn:hover { border-color: rgba(255,255,255,0.2); transform: translateY(-1px); }
+
+  .network-icon { font-size: 22px; position: relative; z-index: 1; }
+  .network-label { font-size: 11px; font-weight: 500; color: var(--text-dim); position: relative; z-index: 1; }
+  .network-btn.active .network-label { color: var(--white); }
+
+  /* TOPIC INPUT */
+  .input-group { display: flex; flex-direction: column; gap: 8px; }
+
+  label { font-size: 12px; font-weight: 500; color: var(--text-dim); }
+
+  textarea, input[type=text] {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    resize: none;
+    transition: border-color 0.2s;
+    outline: none;
+    width: 100%;
+  }
+
+  textarea:focus, input[type=text]:focus { border-color: var(--red); }
+  textarea { height: 100px; }
+
+  /* TONE SELECTOR */
+  .tone-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tone-chip {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text-dim);
+  }
+
+  .tone-chip:hover { border-color: var(--red); color: var(--text); }
+  .tone-chip.active { background: var(--red); border-color: var(--red); color: white; }
+
+  /* GENERATE BTN */
+  .btn-generate {
+    background: var(--red);
+    border: none;
+    color: white;
+    padding: 14px 20px;
+    border-radius: 12px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-generate::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+    transform: translateX(-100%);
+  }
+
+  .btn-generate:hover { background: var(--red-dark); transform: translateY(-1px); box-shadow: 0 8px 24px var(--red-glow); }
+  .btn-generate:hover::after { animation: shimmer 0.6s forwards; }
+  .btn-generate:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  @keyframes shimmer { to { transform: translateX(100%); } }
+
+  /* HISTORY */
+  .history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  .history-item {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .history-item:hover { border-color: var(--red); }
+  .history-net { font-size: 16px; }
+  .history-text { font-size: 12px; color: var(--text-dim); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; }
+  .history-time { font-size: 10px; color: var(--text-dimmer); font-family: 'DM Mono', monospace; }
+
+  /* RIGHT PANEL */
+  .panel-right {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* PREVIEW AREA */
+  .preview-area {
+    flex: 1;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .preview-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .preview-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 2px;
+    color: var(--white);
+  }
+
+  .preview-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .btn-action {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn-action:hover { border-color: var(--red); }
+  .btn-action.primary { background: var(--red); border-color: var(--red); }
+  .btn-action.primary:hover { background: var(--red-dark); }
+  .btn-action:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* POST PREVIEW CARD */
+  .post-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    flex: 1;
+  }
+
+  .post-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.2s;
+  }
+
+  .post-card:hover { border-color: rgba(255,255,255,0.15); }
+
+  .post-card-header {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .post-card-net {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .post-card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .post-image-area {
+    height: 180px;
+    background: var(--bg4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .post-image-area img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .post-image-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-dimmer);
+    font-size: 12px;
+  }
+
+  .post-image-placeholder .icon { font-size: 32px; }
+
+  .post-copy {
+    padding: 14px 16px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-dim);
+    flex: 1;
+    min-height: 80px;
+  }
+
+  .post-copy.filled { color: var(--text); }
+
+  .post-hashtags {
+    padding: 0 16px 14px;
+    font-size: 12px;
+    color: var(--red);
+    font-family: 'DM Mono', monospace;
+    line-height: 1.5;
+  }
+
+  .post-footer {
+    padding: 10px 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .char-count {
+    font-size: 11px;
+    color: var(--text-dimmer);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .char-count.warning { color: var(--yellow); }
+  .char-count.error { color: var(--red); }
+
+  .btn-copy-text {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .btn-copy-text:hover { border-color: var(--red); color: var(--text); }
+
+  /* LOADING STATE */
+  .loading-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(8,8,8,0.85);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    z-index: 10;
+    border-radius: 16px;
+    backdrop-filter: blur(4px);
+  }
+
+  .spinner {
+    width: 36px;
+    height: 36px;
+    border: 2px solid var(--border);
+    border-top-color: var(--red);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .loading-text {
+    font-size: 13px;
+    color: var(--text-dim);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* EMPTY STATE */
+  .empty-state {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    color: var(--text-dimmer);
+    text-align: center;
+    padding: 40px;
+  }
+
+  .empty-icon {
+    font-size: 48px;
+    opacity: 0.4;
+  }
+
+  .empty-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+  }
+
+  .empty-sub { font-size: 13px; max-width: 300px; line-height: 1.6; }
+
+  /* NOTIFICATION */
+  .notif {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 18px;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 999;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  .notif.show { transform: translateY(0); opacity: 1; }
+  .notif.success { border-color: var(--green); }
+  .notif.error { border-color: var(--red); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 2px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    main { grid-template-columns: 1fr; }
+    .panel-left { border-right: none; border-bottom: 1px solid var(--border); }
+    .post-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">▲</div>
+    MARKETINGIAPRO
+    <span class="badge">Dashboard</span>
+  </div>
+  <div class="header-right">
+    <a href="index.html" class="btn-back">← Volver a la landing</a>
+  </div>
+</header>
+
+<main>
+  <!-- LEFT PANEL -->
+  <div class="panel-left">
+
+    <!-- RED SOCIAL -->
+    <div>
+      <div class="section-title">Red Social</div>
+      <div class="network-grid">
+        <button class="network-btn ig active" data-net="instagram" onclick="selectNet(this,'instagram')">
+          <span class="network-icon">📸</span>
+          <span class="network-label">Instagram</span>
+        </button>
+        <button class="network-btn fb" data-net="facebook" onclick="selectNet(this,'facebook')">
+          <span class="network-icon">📘</span>
+          <span class="network-label">Facebook</span>
+        </button>
+        <button class="network-btn tw" data-net="twitter" onclick="selectNet(this,'twitter')">
+          <span class="network-icon">🐦</span>
+          <span class="network-label">Twitter/X</span>
+        </button>
+        <button class="network-btn blog" data-net="blog" onclick="selectNet(this,'blog')">
+          <span class="network-icon">✍️</span>
+          <span class="network-label">Blog</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- TEMA -->
+    <div class="input-group">
+      <label>Tema o Producto</label>
+      <textarea id="topic" placeholder="Ej: Lanzamiento de sistema de automatización para restaurantes..."></textarea>
+    </div>
+
+    <!-- TONO -->
+    <div>
+      <div class="section-title">Tono</div>
+      <div class="tone-row">
+        <span class="tone-chip active" onclick="selectTone(this)">Profesional</span>
+        <span class="tone-chip" onclick="selectTone(this)">Inspirador</span>
+        <span class="tone-chip" onclick="selectTone(this)">Urgente</span>
+        <span class="tone-chip" onclick="selectTone(this)">Educativo</span>
+        <span class="tone-chip" onclick="selectTone(this)">Casual</span>
+        <span class="tone-chip" onclick="selectTone(this)">Provocador</span>
+      </div>
+    </div>
+
+    <!-- CONTEXTO EXTRA -->
+    <div class="input-group">
+      <label>Contexto adicional (opcional)</label>
+      <input type="text" id="context" placeholder="Ej: dirigido a dueños de PYMES en México">
+    </div>
+
+    <!-- GENERAR -->
+    <button class="btn-generate" id="btn-gen" onclick="generateContent()">
+      <span>⚡</span>
+      <span id="btn-text">GENERAR CON IA</span>
+    </button>
+
+    <!-- HISTORIAL -->
+    <div id="history-section" style="display:none">
+      <div class="section-title">Historial reciente</div>
+      <div class="history-list" id="history-list"></div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="panel-right">
+    <div class="preview-area">
+
+      <div class="preview-header">
+        <div class="preview-title">PREVIEW DEL POST</div>
+        <div class="preview-actions">
+          <button class="btn-action" id="btn-regen" onclick="generateContent()" disabled>🔄 Regenerar</button>
+          <button class="btn-action primary" id="btn-publish" onclick="publishPost()" disabled>📤 Publicar</button>
+        </div>
+      </div>
+
+      <!-- EMPTY STATE -->
+      <div class="empty-state" id="empty-state">
+        <div class="empty-icon">🚀</div>
+        <div class="empty-title">TU CONTENIDO AQUÍ</div>
+        <div class="empty-sub">Selecciona una red, escribe tu tema y presiona "Generar con IA" para crear tu post.</div>
+      </div>
+
+      <!-- POST CARDS (hidden until generated) -->
+      <div class="post-grid" id="post-grid" style="display:none">
+
+        <!-- CARD IMAGEN + COPY -->
+        <div class="post-card" style="position:relative" id="card-main">
+          <div class="loading-overlay" id="loading-main" style="display:none">
+            <div class="spinner"></div>
+            <div class="loading-text">Generando imagen...</div>
+          </div>
+          <div class="post-card-header">
+            <div class="post-card-net">
+              <span id="card-net-icon">📸</span>
+              <span id="card-net-name">Instagram</span>
+            </div>
+            <span style="font-size:11px;color:var(--text-dimmer);font-family:'DM Mono',monospace" id="card-time">—</span>
+          </div>
+          <div class="post-card-body">
+            <div class="post-image-area" id="image-area">
+              <div class="post-image-placeholder" id="img-placeholder">
+                <span class="icon">🖼️</span>
+                <span>La imagen aparecerá aquí</span>
+              </div>
+            </div>
+            <div class="post-copy" id="post-copy">El copy de tu post aparecerá aquí...</div>
+            <div class="post-hashtags" id="post-hashtags"></div>
+          </div>
+          <div class="post-footer">
+            <span class="char-count" id="char-count">0 caracteres</span>
+            <button class="btn-copy-text" onclick="copyText()">📋 Copiar texto</button>
+          </div>
+        </div>
+
+        <!-- CARD VARIANTE -->
+        <div class="post-card" style="position:relative" id="card-alt">
+          <div class="loading-overlay" id="loading-alt" style="display:none">
+            <div class="spinner"></div>
+            <div class="loading-text">Generando variante...</div>
+          </div>
+          <div class="post-card-header">
+            <div class="post-card-net">
+              <span id="card-net-icon2">📸</span>
+              <span id="card-net-name2">Instagram</span>
+            </div>
+            <span style="font-size:11px;color:var(--text-dimmer)" id="card-alt-label">Variante B</span>
+          </div>
+          <div class="post-card-body">
+            <div class="post-image-area" id="image-area-alt">
+              <div class="post-image-placeholder">
+                <span class="icon">🎨</span>
+                <span>Variante de imagen</span>
+              </div>
+            </div>
+            <div class="post-copy" id="post-copy-alt">Variante del copy...</div>
+            <div class="post-hashtags" id="post-hashtags-alt"></div>
+          </div>
+          <div class="post-footer">
+            <span class="char-count" id="char-count-alt">0 caracteres</span>
+            <button class="btn-copy-text" onclick="copyTextAlt()">📋 Copiar texto</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- NOTIFICATION -->
+<div class="notif" id="notif">
+  <span id="notif-icon">✅</span>
+  <span id="notif-text">Copiado al portapapeles</span>
+</div>
+
+<script>
+  // ─── CONFIG ───────────────────────────────────────────
+  const GEMINI_API_KEY = 'TU_GEMINI_API_KEY_AQUI'; // ← Reemplaza con tu API key
+  const PROXY_URL = 'https://marketingiapro-proxy.vercel.app/api/chat';
+
+  // ─── STATE ────────────────────────────────────────────
+  let selectedNet = 'instagram';
+  let selectedTone = 'Profesional';
+  let generatedData = null;
+  let history = JSON.parse(localStorage.getItem('mip_history') || '[]');
+
+  const netInfo = {
+    instagram: { icon: '📸', name: 'Instagram', maxChars: 2200 },
+    facebook:  { icon: '📘', name: 'Facebook',  maxChars: 63206 },
+    twitter:   { icon: '🐦', name: 'Twitter/X', maxChars: 280 },
+    blog:      { icon: '✍️', name: 'Blog',       maxChars: 99999 }
+  };
+
+  // ─── NETWORK SELECT ───────────────────────────────────
+  function selectNet(el, net) {
+    document.querySelectorAll('.network-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    selectedNet = net;
+  }
+
+  // ─── TONE SELECT ──────────────────────────────────────
+  function selectTone(el) {
+    document.querySelectorAll('.tone-chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    selectedTone = el.textContent;
+  }
+
+  // ─── GENERATE ─────────────────────────────────────────
+  async function generateContent() {
+    const topic = document.getElementById('topic').value.trim();
+    const context = document.getElementById('context').value.trim();
+
+    if (!topic) { showNotif('⚠️', 'Escribe un tema primero', 'error'); return; }
+
+    const net = netInfo[selectedNet];
+    setLoading(true);
+
+    try {
+      // 1. Generar copy con Gemini via proxy (o directo)
+      const copyPrompt = buildCopyPrompt(topic, context, net, selectedTone);
+      const copyResult = await callGeminiText(copyPrompt);
+
+      let parsed;
+      try {
+        const clean = copyResult.replace(/```json|```/g, '').trim();
+        parsed = JSON.parse(clean);
+      } catch(e) {
+        parsed = {
+          copy_a: copyResult,
+          copy_b: copyResult,
+          hashtags: '#MarketingIA #Automatizacion #Negocios',
+          image_prompt: `Modern professional marketing automation concept for ${topic}, dark theme, red accents, cinematic lighting`
+        };
+      }
+
+      // 2. Generar imagen con Gemini Flash Image
+      let imgUrl = null;
+      let imgUrlAlt = null;
+      try {
+        imgUrl = await callGeminiImage(parsed.image_prompt || `Professional marketing post about: ${topic}`);
+        imgUrlAlt = await callGeminiImage((parsed.image_prompt_b || parsed.image_prompt || `Marketing automation ${topic}`) + ', alternative angle');
+      } catch(e) {
+        console.log('Image generation skipped:', e.message);
+      }
+
+      // 3. Mostrar resultado
+      showResult(parsed, imgUrl, imgUrlAlt, net);
+      saveHistory(topic, selectedNet);
+
+    } catch(err) {
+      console.error(err);
+      showNotif('❌', 'Error al generar: ' + err.message, 'error');
+    }
+
+    setLoading(false);
+  }
+
+  // ─── PROMPT BUILDER ───────────────────────────────────
+  function buildCopyPrompt(topic, context, net, tone) {
+    const limits = {
+      instagram: 'máximo 150 palabras, usa emojis estratégicamente',
+      facebook:  'máximo 200 palabras, puede ser más detallado',
+      twitter:   'MÁXIMO 280 caracteres incluyendo hashtags, sé muy conciso',
+      blog:      'mínimo 200 palabras, estructura con párrafos, educativo y detallado'
+    };
+
+    return `Eres el experto en marketing de MarketingIAPro, una agencia de marketing automatizado con IA para empresas latinoamericanas.
+
+Crea un post para ${net.name} sobre: "${topic}"
+${context ? `Contexto adicional: ${context}` : ''}
+Tono: ${tone}
+Restricciones: ${limits[selectedNet]}
+
+Responde ÚNICAMENTE con un JSON válido, sin texto adicional, sin backticks:
+{
+  "copy_a": "primer copy completo listo para publicar con emojis si aplica",
+  "copy_b": "segunda variante del copy con enfoque diferente",
+  "hashtags": "#hashtag1 #hashtag2 #hashtag3 (5-10 hashtags relevantes)",
+  "image_prompt": "prompt en inglés para generar imagen profesional que acompañe este post, estilo moderno, oscuro, accents rojos"
+}`;
+  }
+
+  // ─── GEMINI TEXT ──────────────────────────────────────
+  async function callGeminiText(prompt) {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ role: 'user', parts: [{ text: prompt }] }],
+          generationConfig: { maxOutputTokens: 1500, temperature: 0.8 }
+        })
+      }
+    );
+    if (!res.ok) throw new Error(`Gemini text error: ${res.status}`);
+    const data = await res.json();
+    return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+  }
+
+  // ─── GEMINI IMAGE ─────────────────────────────────────
+  async function callGeminiImage(prompt) {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-preview-image-generation:generateContent?key=${GEMINI_API_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ role: 'user', parts: [{ text: 'Generate an image: ' + prompt }] }],
+          generationConfig: { responseModalities: ['IMAGE', 'TEXT'] }
+        })
+      }
+    );
+    if (!res.ok) throw new Error(`Gemini image error: ${res.status}`);
+    const data = await res.json();
+    const parts = data.candidates?.[0]?.content?.parts || [];
+    const imgPart = parts.find(p => p.inlineData);
+    if (!imgPart) throw new Error('No image returned');
+    return `data:${imgPart.inlineData.mimeType};base64,${imgPart.inlineData.data}`;
+  }
+
+  // ─── SHOW RESULT ──────────────────────────────────────
+  function showResult(parsed, imgUrl, imgUrlAlt, net) {
+    generatedData = { parsed, imgUrl, net };
+
+    document.getElementById('empty-state').style.display = 'none';
+    document.getElementById('post-grid').style.display = 'grid';
+
+    // Net icons
+    ['card-net-icon','card-net-icon2'].forEach(id => document.getElementById(id).textContent = net.icon);
+    ['card-net-name','card-net-name2'].forEach(id => document.getElementById(id).textContent = net.name);
+
+    // Time
+    document.getElementById('card-time').textContent = new Date().toLocaleTimeString('es-MX', {hour:'2-digit',minute:'2-digit'});
+
+    // Copy A
+    const copyA = parsed.copy_a || '';
+    document.getElementById('post-copy').textContent = copyA;
+    document.getElementById('post-copy').classList.add('filled');
+    document.getElementById('post-hashtags').textContent = parsed.hashtags || '';
+    updateCharCount('char-count', copyA.length + (parsed.hashtags || '').length, net.maxChars);
+
+    // Copy B
+    const copyB = parsed.copy_b || copyA;
+    document.getElementById('post-copy-alt').textContent = copyB;
+    document.getElementById('post-copy-alt').classList.add('filled');
+    document.getElementById('post-hashtags-alt').textContent = parsed.hashtags || '';
+    updateCharCount('char-count-alt', copyB.length + (parsed.hashtags || '').length, net.maxChars);
+
+    // Images
+    setImage('image-area', imgUrl);
+    setImage('image-area-alt', imgUrlAlt);
+
+    // Enable buttons
+    document.getElementById('btn-regen').disabled = false;
+    document.getElementById('btn-publish').disabled = false;
+
+    showNotif('✅', 'Contenido generado con éxito', 'success');
+  }
+
+  function setImage(areaId, url) {
+    const area = document.getElementById(areaId);
+    if (url) {
+      area.innerHTML = `<img src="${url}" alt="Post image">`;
+    }
+  }
+
+  function updateCharCount(id, count, max) {
+    const el = document.getElementById(id);
+    el.textContent = `${count} / ${max} caracteres`;
+    el.className = 'char-count';
+    if (count > max * 0.9) el.classList.add('warning');
+    if (count > max) el.classList.add('error');
+  }
+
+  // ─── LOADING ──────────────────────────────────────────
+  function setLoading(on) {
+    const btn = document.getElementById('btn-gen');
+    const txt = document.getElementById('btn-text');
+    btn.disabled = on;
+    txt.textContent = on ? 'GENERANDO...' : 'GENERAR CON IA';
+    document.getElementById('loading-main').style.display = on ? 'flex' : 'none';
+    document.getElementById('loading-alt').style.display = on ? 'flex' : 'none';
+    if (on) {
+      document.getElementById('empty-state').style.display = 'none';
+      document.getElementById('post-grid').style.display = 'grid';
+    }
+  }
+
+  // ─── COPY TEXT ────────────────────────────────────────
+  function copyText() {
+    const copy = document.getElementById('post-copy').textContent;
+    const tags = document.getElementById('post-hashtags').textContent;
+    navigator.clipboard.writeText(copy + '\n\n' + tags);
+    showNotif('📋', 'Copiado al portapapeles', 'success');
+  }
+
+  function copyTextAlt() {
+    const copy = document.getElementById('post-copy-alt').textContent;
+    const tags = document.getElementById('post-hashtags-alt').textContent;
+    navigator.clipboard.writeText(copy + '\n\n' + tags);
+    showNotif('📋', 'Variante B copiada', 'success');
+  }
+
+  // ─── PUBLISH ──────────────────────────────────────────
+  function publishPost() {
+    showNotif('🔜', 'Conexión con redes sociales próximamente', 'success');
+  }
+
+  // ─── HISTORY ──────────────────────────────────────────
+  function saveHistory(topic, net) {
+    history.unshift({ topic, net, time: new Date().toISOString() });
+    history = history.slice(0, 10);
+    localStorage.setItem('mip_history', JSON.stringify(history));
+    renderHistory();
+  }
+
+  function renderHistory() {
+    if (history.length === 0) return;
+    document.getElementById('history-section').style.display = 'block';
+    const list = document.getElementById('history-list');
+    list.innerHTML = history.slice(0,5).map(h => `
+      <div class="history-item" onclick="loadHistory('${h.topic}','${h.net}')">
+        <span class="history-net">${netInfo[h.net]?.icon || '📄'}</span>
+        <span class="history-text">${h.topic}</span>
+        <span class="history-time">${new Date(h.time).toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'})}</span>
+      </div>
+    `).join('');
+  }
+
+  function loadHistory(topic, net) {
+    document.getElementById('topic').value = topic;
+    document.querySelectorAll('.network-btn').forEach(b => {
+      b.classList.remove('active');
+      if (b.dataset.net === net) b.classList.add('active');
+    });
+    selectedNet = net;
+  }
+
+  // ─── NOTIFICATION ─────────────────────────────────────
+  function showNotif(icon, text, type) {
+    const el = document.getElementById('notif');
+    document.getElementById('notif-icon').textContent = icon;
+    document.getElementById('notif-text').textContent = text;
+    el.className = 'notif ' + type + ' show';
+    setTimeout(() => el.classList.remove('show'), 3000);
+  }
+
+  // ─── INIT ─────────────────────────────────────────────
+  renderHistory();
+</script>
+</body>
+</html>
