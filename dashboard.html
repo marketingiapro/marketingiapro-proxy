@@ -791,7 +791,8 @@
       let imgUrlAlt = null;
       try {
         imgUrl = await callGeminiImage(parsed.image_prompt || `Professional marketing post about: ${topic}`);
-        imgUrlAlt = await callGeminiImage((parsed.image_prompt_b || parsed.image_prompt || `Marketing automation ${topic}`) + ', alternative angle');
+await new Promise(r => setTimeout(r, 3000)); // espera 2 segundos
+imgUrlAlt = await callGeminiImage((parsed.image_prompt_b || parsed.image_prompt || `Marketing automation ${topic}`) + ', alternative angle');
       } catch(e) {
         console.log('Image generation skipped:', e.message);
       }
