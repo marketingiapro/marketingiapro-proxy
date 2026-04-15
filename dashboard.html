@@ -789,13 +789,9 @@
       // 2. Generar imagen con Gemini Flash Image
       let imgUrl = null;
       let imgUrlAlt = null;
-      try {
-        imgUrl = await callGeminiImage(parsed.image_prompt || `Professional marketing post about: ${topic}`);
-await new Promise(r => setTimeout(r, 3000)); // espera 2 segundos
-imgUrlAlt = await callGeminiImage((parsed.image_prompt_b || parsed.image_prompt || `Marketing automation ${topic}`) + ', alternative angle');
-      } catch(e) {
-        console.log('Image generation skipped:', e.message);
-      }
+    // Imágenes desactivadas temporalmente - solo texto
+      imgUrl = null;
+      imgUrlAlt = null;
 
       // 3. Mostrar resultado
       showResult(parsed, imgUrl, imgUrlAlt, net);
