@@ -627,6 +627,17 @@
       <input type="password" id="groq-key-input" placeholder="gsk_..." oninput="updateGroqKey(this.value)" style="font-family:'DM Mono',monospace;font-size:12px">
     </div>
 
+    <!-- TAMAÑO DE IMAGEN -->
+    <div>
+      <div class="section-title">Tamaño de imagen</div>
+      <div class="tone-row">
+        <span class="tone-chip active" onclick="selectSize(this,'1080','1080')" data-w="1080" data-h="1080">⬛ Cuadrada 1:1</span>
+        <span class="tone-chip" onclick="selectSize(this,'1080','1920')" data-w="1080" data-h="1920">📱 Story 9:16</span>
+        <span class="tone-chip" onclick="selectSize(this,'1200','628')" data-w="1200" data-h="628">🖼️ Landscape 16:9</span>
+        <span class="tone-chip" onclick="selectSize(this,'1080','1350')" data-w="1080" data-h="1350">📸 Portrait 4:5</span>
+      </div>
+    </div>
+
     <!-- GENERAR -->
     <button class="btn-generate" id="btn-gen" onclick="generateContent()">
       <span>⚡</span>
@@ -749,6 +760,23 @@
     if (GROQ_API_KEY) localStorage.setItem('groq_api_key', GROQ_API_KEY);
   }
 
+  // ─── IMAGE SIZE ───────────────────────────────────────
+  let selectedImgSize = { w: 1080, h: 1080 };
+
+  function selectSize(el, w, h) {
+    document.querySelectorAll('[data-w]').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    selectedImgSize = { w: parseInt(w), h: parseInt(h) };
+    // Ajustar altura del área de imagen según proporción
+    const ratio = parseInt(h) / parseInt(w);
+    const previewH = Math.min(Math.round(200 * ratio), 320);
+    document.querySelectorAll('.post-image-area').forEach(a => a.style.height = previewH + 'px');
+  }
+
+  function getImageSize() {
+    return selectedImgSize;
+  }
+
   // ─── STATE ────────────────────────────────────────────
   let selectedNet = 'instagram';
   let selectedTone = 'Profesional';
@@ -808,9 +836,14 @@
       }
 
       // 2. Generar imágenes con Pollinations.ai (100% gratis, sin API key)
-      const imgPrompt    = encodeURIComponent(parsed.image_prompt || `Professional marketing post about ${topic}, modern dark style, red accents`);
-      const imgUrl       = `https://image.pollinations.ai/prompt/${imgPrompt}?width=800&height=800&seed=${Date.now()}&nologo=true`;
-      const imgUrlAlt    = `https://image.pollinations.ai/prompt/${imgPrompt}%20alternative%20composition?width=800&height=800&seed=${Date.now()+1}&nologo=true`;
+      const imgPrompt = encodeURIComponent(parsed.image_prompt || `Professional marketing post about ${topic}, modern dark style, red accents`);
+      const imgSize   = getImageSize();
+      const seed1     = Math.floor(Math.random() * 999999);
+      const seed2     = seed1 + 1;
+      const imgUrl    = `https://image.pollinations.ai/prompt/${imgPrompt}?width=${imgSize.w}&height=${imgSize.h}&seed=${seed1}&nologo=true&enhance=true`;
+      // Pequeño delay para que Pollinations no rechace la 2da petición
+      await new Promise(r => setTimeout(r, 800));
+      const imgUrlAlt = `https://image.pollinations.ai/prompt/${imgPrompt}%2C%20alternative%20angle%2C%20different%20composition?width=${imgSize.w}&height=${imgSize.h}&seed=${seed2}&nologo=true&enhance=true`;
 
       // 3. Mostrar resultado
       showResult(parsed, imgUrl, imgUrlAlt, net);
