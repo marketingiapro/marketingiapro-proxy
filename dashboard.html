@@ -810,7 +810,7 @@
     const context = document.getElementById('context').value.trim();
 
     if (!topic) { showNotif('⚠️', 'Escribe un tema primero', 'error'); return; }
-    if (!GROQ_API_KEY || GROQ_API_KEY === 'TU_GROQ_API_KEY_AQUI') {
+    if (!GROQ_API_KEY || GROQ_API_KEY === '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') {
       showNotif('🔑', 'Agrega tu Groq API key en el código', 'error'); return;
     }
 
@@ -824,8 +824,9 @@
 
       let parsed;
       try {
-        const clean = copyResult.replace(/```json|```/g, '').trim();
-        parsed = JSON.parse(clean);
+		  const jsonMatch = copyResult.match(/\{[\s\S]*\}/);
+		  const clean = jsonMatch ? jsonMatch[0] : copyResult;
+		  	parsed = JSON.parse(clean);
       } catch(e) {
         parsed = {
           copy_a: copyResult,
