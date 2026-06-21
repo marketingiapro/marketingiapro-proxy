@@ -1063,7 +1063,7 @@ var PROXY_URL = 'https://marketingiapro-proxy.vercel.app/api/chat';
 async function getAIResponse(userMsg){
   isTyping=true;
   document.getElementById('cb-send').disabled=true;
-  showTyping();
+  showTyping(); // Muestra los puntitos de animación
 
   conversationHistory.push({role:'user',content:userMsg});
 
@@ -1078,7 +1078,21 @@ async function getAIResponse(userMsg){
     });
     var data = await res.json();
     var reply = data.content && data.content[0] ? data.content[0].text : 'Disculpa, hubo un problema. ¿Puedes repetir tu pregunta?';
+    
     conversationHistory.push({role:'assistant',content:reply});
+
+    // ── SIMULAR TIEMPO HUMANO DE ESCRITURA ──
+    const words = reply.split(' ').length;
+    // 40ms por palabra + 800ms de tiempo base de pensamiento
+    let humanDelay = 800 + (words * 40);
+    // Forzamos límites: mínimo 1.2 segundos, máximo 4 segundos para no aburrir
+    humanDelay = Math.min(humanDelay, 4000);
+    humanDelay = Math.max(humanDelay, 1200);
+
+    // Mantenemos los puntitos activos durante el delay calculado
+    await new Promise(resolve => setTimeout(resolve, humanDelay));
+
+    // ── AHORA SÍ: Ocultamos los puntitos e imprimimos el mensaje ──
     hideTyping();
 
     // Detectar si el bot recopiló datos completos para mostrar opción de agendar
@@ -1091,6 +1105,7 @@ async function getAIResponse(userMsg){
     }
     botMessage(reply, opts);
   } catch(err){
+    console.error(err);
     hideTyping();
     botMessage('Lo siento, tuve un problema de conexión. Por favor escríbenos directo a nuestro WhatsApp o intenta de nuevo en un momento.');
   }
